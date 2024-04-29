@@ -1,10 +1,10 @@
-"use client";
+"use server";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Task } from "./types/task.type";
-import { DataTable } from "./components/DataTable";
-import { mockData } from "./temp-data/columns";
+import { Task } from "@/app/types/task.type";
+import { DataTable } from "@/app/components/DataTable";
+import { mockData } from "@/app/temp-data/columns";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
@@ -33,32 +33,7 @@ const columns: ColumnDef<Partial<Task>>[] = [
     cell: ({ row }) => {
       const isCompleted: boolean = row.getValue("completed");
 
-      return (
-        <div>
-          <Checkbox
-            checked={isCompleted}
-            onCheckedChange={() => updateCompleted(row)}
-          />
-        </div>
-      );
+      return <div>Checkout</div>;
     },
   },
 ];
-
-export default async function Home() {
-  const supabase = createClient();
-
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/login");
-  }
-
-  return (
-    <div>
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        Welcome {data.user.email}
-      </h1>
-      <DataTable columns={columns} data={mockData} />
-    </div>
-  );
-}
